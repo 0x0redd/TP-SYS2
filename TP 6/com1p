@@ -1,0 +1,4 @@
+echo je suis dans com1p
+ps fl
+.com2p
+echo je suis de retour dans com1p

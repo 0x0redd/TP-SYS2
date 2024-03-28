@@ -1,0 +1,4 @@
+echo je suis dans com1e
+ps fl
+exec ./com2e
+echo je suis de retour dans com1e

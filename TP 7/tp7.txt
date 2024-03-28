@@ -1,0 +1,168 @@
+othmane ferrah - Amettich mustapha
+tp 7	binome 7
+---------------------------------------------------------------
+exercie 1 
+
+1-Exécuter les 4 commandes suivantes en arrière plan :
+
+	othmane@othmane-SATELLITE-C670-12X:~/Documents/tpsys$ sleep 1300 &
+	[1] 58336
+	othmane@othmane-SATELLITE-C670-12X:~/Documents/tpsys$ sleep 1200 &
+	[2] 58337
+	othmane@othmane-SATELLITE-C670-12X:~/Documents/tpsys$ vi toto.c &
+	[3] 58338
+	othmane@othmane-SATELLITE-C670-12X:~/Documents/tpsys$ lpr fichier1 &
+	[4] 58341
+
+	[3]+  Stopped                 vi toto.c
+
+2-Visualiser l'ensemble des jobs en arrière plan :
+	othmane@othmane-SATELLITE-C670-12X:~/Documents/tpsys$ jobs 
+	[1]   Running                 sleep 1300 &
+	[2]-  Running                 sleep 1200 &
+	[3]+  Stopped                 vi toto.c
+
+3- Stopper le job (sleep 1200)
+
+othmane@othmane-SATELLITE-C670-12X:~/Documents/tpsys$fg %2
+		sleep 1200
+		^Z
+		[2]+  Stopped                 sleep 1200
+
+4-Relancer le job (sleep 1200) en arrièrer plan
+	 
+	othmane@othmane-SATELLITE-C670-12X:~/Documents/tpsys$$bg %2
+|	[2]+ sleep 1200 &
+
+
+5-Arrêter le job (sleep 1200)
+
+	othmane@othmane-SATELLITE-C670-12X$kill -STOP %2
+
+	othmane@othmane-SATELLITE-C670-12X:~/Documents/tpsys$ ps -f
+	UID          PID    PPID  C STIME TTY          TIME CMD
+	othmane    58251   31696  0 18:23 pts/1    00:00:00 bash
+	othmane    58336   58251  0 18:26 pts/1    00:00:00 sleep 1300
+	othmane    58338   58251  0 18:26 pts/1    00:00:00 vi toto.c
+	othmane    58675   58251  0 18:38 pts/1    00:00:00 ps -f
+
+6- Arrêter tous les autres jobs
+
+
+	othmane@othmane-SATELLITE-C670-12X:~/Documents/tpsys$ killall sleep 1200 sleep 1300
+	1200: no process found
+	sleep: no process found
+	1300: no process found
+	[1]-  Terminated              sleep 1300
+	othmane@othmane-SATELLITE-C670-12X:~/Documents/tpsys$ ps -f
+	UID          PID    PPID  C STIME TTY          TIME CMD
+	othmane    58251   31696  0 18:23 pts/1    00:00:00 bash
+	othmane    58338   58251  0 18:26 pts/1    00:00:00 vi toto.c
+	othmane    58716   58251  0 18:40 pts/1    00:00:00 ps -f
+	othmane@othmane-SATELLITE-C670-12X:~/Documents/tpsys$ kill -9 58338
+	othmane@othmane-SATELLITE-C670-12X:~/Documents/tpsys$ ps -f 
+	UID          PID    PPID  C STIME TTY          TIME CMD
+	othmane    58251   31696  0 18:23 pts/1    00:00:00 bash
+	othmane    58719   58251  0 18:40 pts/1    00:00:00 ps -f
+	[3]+  Killed                  vi toto.c
+
+
+
+
+
+Exercice 2 
+Créez un fichier de script bash intitulé forever.sh qui contient le code suivant :
+	#!/bin/bash
+	while [ 1 ]; do
+	for ((x=1; x <= 100000; x++))
+	do
+	echo 'hello' > /dev/null
+	done
+	echo "bonjour, il est "`date`;
+	done
+
+
+a) donnez-lui les droits d’exécution pour vous (chmod) et lancez-le. Est-ce que le script va s’arrêter un jour ?
+
+	othmane@othmane-SATELLITE-C670-12X:~/Documents/tpsys$ vim forever.sh
+	othmane@othmane-SATELLITE-C670-12X:~/Documents/tpsys$ ls 
+	forever.sh  tp7.txt
+	othmane@othmane-SATELLITE-C670-12X:~/Documents/tpsys$ chmod +x forever.sh 
+	othmane@othmane-SATELLITE-C670-12X:~/Documents/tpsys$ ./forever.sh
+	bonjour, il est 05 أبريل, 2023 +00 20:29:18
+	bonjour, il est 05 أبريل, 2023 +00 20:29:21
+	bonjour, il est 05 أبريل, 2023 +00 20:29:24
+	bonjour, il est 05 أبريل, 2023 +00 20:29:27
+	bonjour, il est 05 أبريل, 2023 +00 20:29:30
+	^C
+
+Est-ce que le script va s’arrêter un jour ?
+ 
+ 	NON, le scripte ne va pas s'arreter car nous avons une boucle infinie.
+
+b) ouvrez une autre console pendant que le script s’exécute et trouver le PID de forever.sh avec la
+commande pgrep.
+
+othmane@othmane-SATELLITE-C670-12X:~$ pgrep forever.sh 
+61171
+
+c) expliquez son état avec la commande ps -o stat,comm -p PID.
+
+othmane@othmane-SATELLITE-C670-12X:~$ ps -o stat
+	STAT
+	Ss
+	R+
+
+Son etat est R+: cour d'execution en arriere plan
+
+d) revenez à la console d’où vous avez lancé forever.sh et faites CTRL-Z. Il est maintenant
+interrompu par le shell. Quel est son état ?
+
+	^Z
+	[1]+  Stopped                 ./forever.sh
+othmane@othmane-SATELLITE-C670-12X:~/Documents/tpsys$ ps -o stat
+	STAT
+	Ss
+	T
+	R+
+Son etat est T: c'est a dire il est arrete
+
+c) revenez à la console d’où vous avez lancé forever.sh et faites bg. Le processus est maintenant en
+« background » et tourne, vous laissant utiliser la console (même si c’est un peu difficile, puisque
+le programme affiche pendant que vous tapez…). Faites fg pour le mettre au premier plan, et
+tuez le processus avec CTRL-C. Expliquez, l’utilité de CTRL-C et CTRL-Z ainsi que la
+différence entre un processus à l’avant-plan et à l’arrière-plan.
+
+-CTRL-C sert a tue un processus alors que CTRL-Z aide a arrete un processus.
+
+f) Relancez forever.sh avec, à la fin de la commande, l’esperluette (&). Ceci lance la commande en
+arrière-plan et vous redonne le contrôle de la console.
+	
+	commande: ./froever.sh &
+	
+g) Lancez deux autres forever.sh avec une esperluette, vous avez trois processus qui tournent
+concurremment. Faites jobs pour vous en assurer.
+
+on repete l'action precedent en tapant ./forever & en plein execution.
+
+h) Trouvez le PID de vos trois forever.sh et faites, sur l’autre console, la commande kill suivie du
+pid de chacun des processus. À quoi sert la commande kill ? Pourquoi killall aurait-il pu
+accélérer votre travail ?
+
+A l'aide de la commande top on peux visualiser les processus en cour puis execute la commande kill suivit du PID 
+
+
+i) Sur le serveur, trouvez les utilisateurs qui s’y trouvent en faisant w. Trouvez ensuite leur
+processus bash (leur invite de commande) et envoyez un kill à leur invite de commande.
+Expliquez ce qui se passe.
+
+La commande 'kill' sert a stop un processus. Contrairement a la commande 'killall <nomProcessus>' qui arrete d'un trait tout le(s) processus concernants le nom du processus specifie.
+
+
+Exercice 3 :
+
+a) 	dans la premiere consonle , commande: cat
+	dans la deuxieme consonle , commande: top
+	(en peut chercher specifiquement la commande cat dans top en cliquant 'L' et chercher cat)
+	
+b)	top affiche que l etat du processus cat est : 'S' c'est a dire En sommeil. Le processus n'est pas actif mais susceptible d'etre reveille par un appel systeme.

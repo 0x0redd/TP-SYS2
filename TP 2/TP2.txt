@@ -1,0 +1,103 @@
+othmane ferrah
+group a1 binome 7
+tp 2
+---------------------------------------------------------------------------------------------
+1) Editer dans le fichier ”fonction.c ” la fonction : fct1 ( )
+Cette fonction affiche sur l'écran ”fonction1” puis appelle la fonction fct2().
+Commande pour compiler le fichier ” fonction.c ” en utilisant l'option ” -c ” du compilateur:
+	
+	#include<stdio.h>
+	void fct1(void)
+	{
+	printf("fonction1\n");
+	fct2();
+	}
+
+2) Editer dans le fichier ”fonction2.c ” la fonction : fct2 ( )
+Cette fonction affiche sur l'écran ”fonction2”.
+Commande pour compiler le fichier ” fonction2.c ” en utilisant l'option ” -c ” du compilateur:
+	
+	#include<stdio.h>
+	void fct2(void)
+	{
+	printf("fonction2");
+	}
+
+3) Editer dans le fichier ”principal.c ” la fonction : main ( )
+Cette fonction affiche sur l'écran ”principal” puis appelle la fonction fct1().
+	#include<stdio.h>
+	void main(void)
+	{
+	printf("principal");
+	fct1();
+	}
+
+Commande pour compiler le programme « principal.c »:
+	tp2$ gcc fonction2.c -c
+	tp2$ gcc fonction.c -c
+	tp2$ gcc principal.c -c
+
+
+	gcc principal.c fonction.o fonction2.o -o principal
+	
+	>>
+	tp2$ ./principal
+	principal
+	Fonction1
+	fonction2
+	
+Commande pour faire l'édition de lien avec « fonction.c » et « fonction2.c »
+	>> gcc fonction.c fonction2.o -c
+
+4) Utiliser la commande nm pour « fonction.c », « fonction2.c » et « principal.c »:
+$ nm fonction.o 
+	0000000000000000 T fct1
+		         U fct2
+		         U _GLOBAL_OFFSET_TABLE_
+		         U puts
+$ nm fonction2.o 
+	0000000000000000 T fct2
+		         U _GLOBAL_OFFSET_TABLE_
+		         U printf
+$ nm principal
+	0000000000004010 B __bss_start
+	0000000000004010 b completed.8061
+		         w __cxa_finalize@@GLIBC_2.2.5
+	0000000000004000 D __data_start
+	0000000000004000 W data_start
+	00000000000010b0 t deregister_tm_clones
+	0000000000001120 t __do_global_dtors_aux
+	0000000000003db8 d __do_global_dtors_aux_fini_array_entry
+	0000000000004008 D __dso_handle
+	0000000000003dc0 d _DYNAMIC
+	0000000000004010 D _edata
+	0000000000004018 B _end
+	000000000000118f T fct1
+	00000000000011b0 T fct2
+	0000000000001248 T _fini
+	0000000000001160 t frame_dummy
+	0000000000003db0 d __frame_dummy_init_array_entry
+	00000000000021bc r __FRAME_END__
+	0000000000003fb0 d _GLOBAL_OFFSET_TABLE_
+		         w __gmon_start__
+	0000000000002024 r __GNU_EH_FRAME_HDR
+	0000000000001000 t _init
+	0000000000003db8 d __init_array_end
+	0000000000003db0 d __init_array_start
+	0000000000002000 R _IO_stdin_used
+		         w _ITM_deregisterTMCloneTable
+		         w _ITM_registerTMCloneTable
+	0000000000001240 T __libc_csu_fini
+	00000000000011d0 T __libc_csu_init
+		         U __libc_start_main@@GLIBC_2.2.5
+	0000000000001169 T main
+		         U printf@@GLIBC_2.2.5
+		         U puts@@GLIBC_2.2.5
+	00000000000010e0 t register_tm_clones
+	0000000000001080 T _start
+	0000000000004010 D __TMC_END__
+
+5) Dans le fichier « principal.c » la fonction « printf « est elle appellée ? Commentaires ?
+oui  elle appelle une fois pour aficher "principal"
+mais pour les autre caractere afiche les fonction fct1 et fct2 sont appele 
+

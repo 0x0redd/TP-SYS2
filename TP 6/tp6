@@ -1,0 +1,177 @@
+othmane ferrah - Amettich mustapha
+tp 6	binome 7
+
+----------------------------------------------------------
+		*Gestion des processus*
+		
+En utilisant le langage de commande shell (” bash ”) et les commandes ” echo ”, ” exec ” et
+” . ” nous allons voir la gestion des processus, la création de processus fils et l'exécution
+d'une commande dans un processus
+Construire avec l'éditeur de texte ” vi ” les trois fichiers de commandes ” com1 ”, ” com2 ”
+et ” com3 ” tels qu'ils sont décrits ci-dessous :
+
+	$ cat com1
+		echo je suis dans com1
+		ps fl
+		com2
+		echo je suis de retour dans com1
+	$ cat com2
+		echo je suis dans com2
+		ps fl
+		com3
+		echo je suis de retour dans com2
+	$ cat com3
+		echo je suis dans com3
+		ps fl
+	
+-Essayer de lancer la commande ” com1 ”. Que se passe-t-il ? Que devez-vous faire pour
+que l'exécution puisse être lancée ?
+	
+	$ chmod +x com2.sh
+	/Downloads/tp sys$ chmod +x com3.sh
+	/Downloads/tp sys$ ls -l 
+		total 4536
+		-rwxrwxr-x 1 pc4 pc4      67 Mar 22 09:02 com1.sh
+		-rwxrwxr-x 1 pc4 pc4      67 Mar 22 09:03 com2.sh
+		-rwxrwxr-x 1 pc4 pc4      29 Mar 22 09:03 com3.sh
+		-rw-rw-r-- 1 pc4 pc4 1509013 Mar 15 08:50 diapos1.pdf
+		-rw-rw-r-- 1 pc4 pc4 1506316 Mar 15 08:50 diapos2.pdf
+		-rw-rw-r-- 1 pc4 pc4 1256251 Mar 22 08:59 diapos3.pdf
+		-rw-rw-r-- 1 pc4 pc4     856 Mar 15 08:49 exemple1a.c
+		-rw-rw-r-- 1 pc4 pc4  112838 Mar 15 08:50 TP2EE.pdf
+		-rw-rw-r-- 1 pc4 pc4   98292 Mar 15 08:50 TP4GF.pdf
+		-rw-rw-r-- 1 pc4 pc4    2920 Mar 15 10:19 tp5
+		-rw-rw-r-- 1 pc4 pc4   61438 Mar 15 08:50 TP5HG.pdf
+		-rw-rw-r-- 1 pc4 pc4   73209 Mar 22 08:59 TP6TRsss.pdf
+		
+	$ cat trace1
+	je suis dans com1
+	F   UID     PID    PPID PRI  NI    VSZ   RSS WCHAN  STAT TTY        TIME COMMAND
+	0  1000    8424    6401  20   0  10756  4956 do_wai Ss   pts/1      0:00 bash
+	0  1000    9950    8424  20   0 820256 59416 do_sys Sl+  pts/1      0:11  \_ gedit
+	0  1000    6409    6401  20   0  10892  5288 do_wai Ss   pts/0      0:00 bash
+	1  1000   13187    6409  20   0  10892  2980 do_wai S+   pts/0      0:00  \_ bash
+	4  1000   13188   13187  20   0  11420  3192 -      R+   pts/0      0:00      \_ ps fl
+	4  1000    1198    1059  20   0 164024  6576 do_sys Ssl+ tty2       0:00 /usr/lib/gdm3/gdm-x-session --run-script env GNOME_SHELL_SESSION_MODE=ubuntu /usr/bin/gnome-session --systemd --session=ubuntu
+	4  1000    1200    1198  20   0 554580 98620 -      Sl+  tty2       2:33  \_ /usr/lib/xorg/Xorg vt2 -displayfd 3 -auth /run/user/1000/gdm/Xauthority -background none -noreset -keeptty -verbose 3
+	0  1000    1306    1198  20   0 188224 13760 do_sys Sl+  tty2       0:00  \_ /usr/libexec/gnome-session-binary --systemd --systemd --session=ubuntu
+	je suis de retour dans com1
+
+
+
+		*Utilisation de la commande « . »*
+		
+Reprendre les fichiers correspondant aux commandes ” com1 ”, ” com2 ” et ” com3 ” et
+remplacer les appels aux commandes ” com? ” par ” . com? ”. Vous pouvez créer de
+nouveaux fichiers ” com1p ”, ” com2p ” et ” com3p ” ainsi modifiés.
+
+
+	~/Downloads/tp sys$ cat com1p
+		echo je suis dans com1p
+		ps jf
+		.com2p
+		echo je suis de retour dans com1p
+
+
+	~/Downloads/tp sys$ cat com2p
+		echo je suis dans com2p
+		ps jf 
+		.com3p
+		echo je suis de retour dans com2p
+
+	
+	~/Downloads/tp sys$ cat com3p
+		echo je suis dans com3p
+		ps jf
+
+
+Lancer la nouvelle commande ” com1p ” en redirigeant les traces dans le fichier ” trace2 ”.
+
+
+$ cat trace2
+	je suis dans com1p
+	   PPID     PID    PGID     SID TTY        TPGID STAT   UID   TIME COMMAND
+	   6401    8424    8424    8424 pts/1       9950 Ss    1000   0:00 bash
+	   8424    9950    9950    8424 pts/1       9950 Sl+   1000   0:16  \_ gedit
+	   6401    6409    6409    6409 pts/0      18858 Ss    1000   0:00 bash
+	   6409   18858   18858    6409 pts/0      18858 S+    1000   0:00  \_ bash
+	  18858   18859   18858    6409 pts/0      18858 R+    1000   0:00      \_ ps jf
+
+
+
+	*Utilisation de la commande «exec»*
+
+Reprendre les fichiers correspondant aux commandes ” com1 ”, ” com2 ” et ” com3 ” et
+remplacer les appels aux commandes ” com? ” par ” exec ./com? ”. Vous pouvez créer de
+nouveaux fichiers ” com1e ”, ” com2e ” et ” com3e ” ainsi modifiés.
+
+pc4@pc4-ThinkCentre-M70a:~/Downloads/tp sys$ vim com1e
+pc4@pc4-ThinkCentre-M70a:~/Downloads/tp sys$ vim com2e
+pc4@pc4-ThinkCentre-M70a:~/Downloads/tp sys$ vim com3e
+pc4@pc4-ThinkCentre-M70a:~/Downloads/tp sys$ vim com2e
+pc4@pc4-ThinkCentre-M70a:~/Downloads/tp sys$ vim com1e
+
+
+pc4@pc4-ThinkCentre-M70a:~/Downloads/tp sys$ chmod +x com?e
+pc4@pc4-ThinkCentre-M70a:~/Downloads/tp sys$ ls
+com1e    com2p    com3.sh      exemple1a.c  TP5HG.pdf     trace2
+com1p    com2.sh  diapos1.pdf  TP2EE.pdf    TP6TRsss.pdf
+com1.sh  com3e    diapos2.pdf  TP4GF.pdf    trace
+com2e    com3p    diapos3.pdf  tp5          trace1
+
+Lancer la nouvelle commande ” com1e ” en redirigeant les traces dans le fichier ” trace3 ”.
+
+pc4@pc4-ThinkCentre-M70a:~/Downloads/tp sys$ cat trace3
+je suis dans com1e
+   PPID     PID    PGID     SID TTY        TPGID STAT   UID   TIME COMMAND
+   6401    8424    8424    8424 pts/1       9950 Ss    1000   0:00 bash
+   8424    9950    9950    8424 pts/1       9950 Sl+   1000   0:33  \_ gedit
+   6401    6409    6409    6409 pts/0      19510 Ss    1000   0:00 bash
+   6409   19510   19510    6409 pts/0      19510 S+    1000   0:00  \_ bash
+  19510   19511   19510    6409 pts/0      19510 R+    1000   0:00      \_ ps jf
+
+je suis dans com2e
+   PPID     PID    PGID     SID TTY        TPGID STAT   UID   TIME COMMAND
+   6401    8424    8424    8424 pts/1       9950 Ss    1000   0:00 bash
+   8424    9950    9950    8424 pts/1       9950 Sl+   1000   0:33  \_ gedit
+   6401    6409    6409    6409 pts/0      19510 Ss    1000   0:00 bash
+   6409   19510   19510    6409 pts/0      19510 S+    1000   0:00  \_ bash
+  19510   19512   19510    6409 pts/0      19510 R+    1000   0:00      \_ ps jf
+
+je suis dans com3e
+   PPID     PID    PGID     SID TTY        TPGID STAT   UID   TIME COMMAND
+   6401    8424    8424    8424 pts/1       9950 Ss    1000   0:00 bash
+   8424    9950    9950    8424 pts/1       9950 Sl+   1000   0:33  \_ gedit
+   6401    6409    6409    6409 pts/0      19510 Ss    1000   0:00 bash
+   6409   19510   19510    6409 pts/0      19510 S+    1000   0:00  \_ bash
+  19510   19513   19510    6409 pts/0      19510 R+    1000   0:00      \_ ps jf
+  
+
+		*Conclusions*
+
+"." provoque l'execution des fichiers script mais en revanche la command "." ne peut pas etre utilise avec des fichier binaires comme "ps".
+
+l'utilisation de la commande "exec" provoque le relancement du code du processus appelant par celui de la commandes "exec com?e" et d'autre pat que les commandes "echo je suis de retour dans com1e" et "echo je suis de retour dans com2e" ne soienr jamais appelees.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

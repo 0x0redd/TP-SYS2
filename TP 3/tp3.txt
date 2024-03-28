@@ -1,0 +1,161 @@
+TP 4 binome 7
+othmane ferrha - Amettich mustapha
+
+--------------------------------------------------------------------------
+	Exercice 1 — Lecture d’un inombre par le langage C
+
+a) quelle est la commande pour afficher le numéro de l’inoeud à un fichier ?
+	ls -li 
+	$ ls -li
+	total 4537
+	22568 drwxrwxrwx 1 pc4 pc4       0 فبراير 22 10:31  1
+	22574 -rwxrwxrwx 1 pc4 pc4   16696 فبراير 22 09:28  a.out
+	22603 -rwxrwxrwx 1 pc4 pc4 1506316 مارس    8 08:57  diapos2.pdf
+	22577 -rwxrwxrwx 1 pc4 pc4     411 فبراير 22 10:30  exe2TP2.c
+	22576 -rwxrwxrwx 1 pc4 pc4   16696 فبراير 22 09:25  exec
+	22567 -rwxrwxrwx 1 pc4 pc4    8304 فبراير 22 09:55  minimal1
+	22573 -rwxrwxrwx 1 pc4 pc4      62 فبراير 22 09:36  minimal.c
+	22575 -rwxrwxrwx 1 pc4 pc4    1688 فبراير 22 09:24  minimal.o
+	22594 -rwxrwxrwx 1 pc4 pc4 1691705 يونيو   2  2022  Sys.Partie1.pdf
+	22597 -rwxrwxrwx 1 pc4 pc4 1258062 يونيو   2  2022  Sys.Partie2.pdf
+	22572 -rwxrwxrwx 1 pc4 pc4    2224 فبراير 22 10:30 'tp 2'
+	22578 drwxrwxrwx 1 pc4 pc4    4096 مارس    1 17:55  tp2
+	22598 -rwxrwxrwx 1 pc4 pc4    8935 مارس    1 09:07  TP3DS.pdf
+	22604 -rwxrwxrwx 1 pc4 pc4   98292 مارس    8 08:57  TP4GF.pdf
+	22560 drwxrwxrwx 1 pc4 pc4    4096 فبراير 22 09:30 'tp sys'
+
+b) On dispose dans la librairie C de la fonction stat — voir la documentation par man fstat — et on
+peut donc construire une fonction qui affiche le numéro de l’inœud associé à un fichier. Écrivez
+cette fonction.
+	------------------------------------------------------------	
+		#include<sys/types.h>
+		#include<sys/stat.h>
+		#include<stdio.h>
+		int system(const char *a);
+		int main(){
+			system("stat %i stat.c");
+			return 0;}
+	-------------------------------------------------------------
+
+			tp3$ gcc stat.c
+			
+			tp3$ ./a.out
+				stat: cannot stat '%i': No such file or directory
+				  File: stat.c
+				  Size: 139       	Blocks: 1          IO Block: 4096   regular file
+				Device: 811h/2065d	Inode: 22704       Links: 1
+				Access: (0777/-rwxrwxrwx)  Uid: ( 1000/     pc4)   Gid: ( 1000/     pc4)
+				Access: 2023-03-08 09:15:37.073332400 +0100
+				Modify: 2023-03-08 09:15:33.858649700 +0100
+				Change: 2023-03-08 09:15:33.858649700 +0100
+				 Birth: -
+			 
+			tp3$ ls -li 
+				total 21
+				22705 -rwxrwxrwx 1 pc4 pc4 16696 مارس    8 09:15 a.out
+				22704 -rwxrwxrwx 1 pc4 pc4   139 مارس    8 09:15 stat.c
+				
+c) Vérifier que le résultat obtenu par le programme C, est le même que celui obtenu avec la
+commande de de la question a).
+on a le même nombre d'inieud
+
+
+Exercice 2 : Les droits supplémentaires
+Droits SUID :
+
+a) Quelle est la différence entre les 2 fichiers : /bin/passwd et /etc/passwd ?
+	
+	/bin$ ls -ils passwd 
+	11408981 68 -rwsr-xr-x 1 root root 68208 نونبر  29 12:53 passwd
+	
+	/etc$ ls -ils passwd 
+	19399154 4 -rw-r--r-- 1 root root 2776 دجنبر  21  2021 passwd
+	on doit avoire le mode superutilisateur pour executer passwd dans bin/passwd ainsi 	l’écriture pourra se faire dans le fichier /etc/passwd
+	l’utilisateur aura changé son mot de passe sans être root. Sans le setuid, l’utilisateur n’aurait pas pu écrire dans le fichier /etc/passwd
+	
+b) Quelle est le rôle du fichier /etc/shadow ?
+
+	Le fichier /etc/shadow est utilisé pour augmenter le niveau de sécurité des mots de passe. 
+	Le fichier contient une version hashée des mots de passe et seuls des utilisateurs très privilégiés peuvent y avoir accès.
+
+c) Afficher les droits d’accès du fichier /bin/passwd
+	
+	/bin$ ls -ils passwd 
+	11408981 68 -rwsr-xr-x 1 root root 68208 نونبر  29 12:53 passwd
+	
+d) Quel est l’effet du « s » dans les droits d’accès de ce fichier ?
+
+il permet d'allouer temporairement à un utilisateur les droits du propriétaire du fichier, durant son exécution.
+
+
+e) Afficher les droits d’accès du fichier /etc/shadow. Quelle est sa valeur octale ?
+
+	ls -lis shadow 
+	19399201 "4" -rw-r----- 1 root shadow 1460 دجنبر  21  2021 shadow
+sa valeur octale est: 4
+
+f) Donnez la commande qui permet d’afficher tous les programmes comme passwd, qui offre
+cette permission SUID dans le répertoire /usr/bin/ ?
+
+	othmane@othmane-SATELLITE-C670-12X:/usr/bin$ ls -lia | grep rws 
+	othmane@othmane-SATELLITE-C670-12X:/usr/bin$ ls -lia | grep rws 
+	6559603 -rwsr-xr-x  1 root root       72872 نونبر  23 19:21 chfn
+	6559604 -rwsr-xr-x  1 root root       44840 نونبر  23 19:21 chsh
+	6553960 -rwsr-xr-x  1 root root       35200 ماي     7  2022 fusermount3
+	6559607 -rwsr-xr-x  1 root root       72232 نونبر  23 19:21 gpasswd
+	6554342 -rwsr-xr-x  1 root root       47488 ماي     3  2022 mount
+	6559702 -rwsr-xr-x  1 root root       40664 نونبر  23 19:21 newgrp
+	6559608 -rwsr-xr-x  1 root root       60136 نونبر  23 19:21 passwd
+	6554482 -rwsr-xr-x  1 root root       30872 فبراير 26  2022 pkexec
+	6554732 -rwsr-xr-x  1 root root       55680 ماي     3  2022 su
+	6554226 -rwsr-xr-x  1 root root      248840 مارس    1 14:59 sudo
+	6554833 -rwsr-xr-x  1 root root       35200 ماي     3  2022 umount
+
+g) Donnez la commande pour afficher tous les fichiers possédant le SUID dans tous les répertoires du système.
+
+$sudo find -type f -perm /4000
+
+
+h) Donnez la commande pour rechercher parmi les fichiers ordinaires (pas les répertoires) ceuxbqui ont au moins le droit s (pensez à utiliser « find ».
+
+
+
+--Le sticky bit:--
+
+
+a) Tapez les commandes suivantes :
+
+ ls -l / | grep tmp
+	drwxrwxrwt  20 root root  4096 مارس    8 14:57 tmp
+
+  ls -l /var | grep tmp
+	drwxrwxrwt 13 root root     4096 مارس    8 14:57 tmp
+
+b) Que représente le « t » dans les droits d’accès de « tmp » ?
+
+Lorsque ce droit est positionné sur un répertoire, il interdit la suppression d'un fichier qu'il contient à tout utilisateur autre que le propriétaire du fichier. Néanmoins, il est toujours possible pour un utilisateur possédant les droits d'écriture sur ce fichier de le modifier.
+Pour les fichiers, l'utilisation est tout autre. Le bit collant (sticky bit) indique alors que ce fichier doit encore rester en mémoire vive après son exécution. Le but était, à l'époque, d'améliorer les performances en évitant de charger/décharger un fichier de la mémoire 
+
+c) Créer un répertoire « rep » et afficher ses droits d’accès.
+
+	/Documents$ ls -la rep 
+	total 8
+	drwxrwxr-x 2 othmane othmane 4096 مارس    8 15:14 .
+	drwxr-xr-x 3 othmane othmane 4096 مارس    8 15:14 ..
+
+d) Donnez la commande pour positionner le droit de stcky bit à « rep ». Que remarquez vous sur
+les droits d’accès ?
+
+	~/Documents$ chmod +t rep 
+	~/Documents$ ls -ls
+			total 4
+			4 drwxrwxr-t 2 othmane othmane 4096 مارس    8 15:14 rep
+
+e) Enlever les droits x de « rep » pour les autres utilisateurs.
+
+	$chmod og=rw rep 
+	$ ls -la rep
+	drw-rw-rw-  2 othmane othmane 4096 مارس    8 15:14 rep
+
+f) Que remarquez-vous sur les droits d’accès de rep ? Expliquez.
+ je remarque que le sticky bit disparu

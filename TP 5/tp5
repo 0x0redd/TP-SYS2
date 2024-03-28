@@ -1,0 +1,228 @@
+othmane ferrah - Amettich mustapha
+tp 5;binome 7
+--------------------------------------------------------------------------
+« Gestion de processus : première approche »
+1/ l’aide de man, expliquez les colonnes suivantes de la commande top : PID, USER, PR, RES, S,%CPU, %MEM, TIME+, COMMAND.
+
+- PID  --  Id de Processus
+          L’ID  unique  du  processus de la tâche. Il s’adapte périodiquement,sans toutefois redémarrer à zéro.
+         
+- USER  --  Nom de l’utilisateur
+          Le nom utilisateur effectif du propriétaire de la tâche.
+          
+- PR  --  Priorité
+          La priorité de la tâche.
+
+- RES  --  Taille résidente (Ko)
+          La mémoire physique « non swappée » qu’une tâche a utilisée.
+
+- S  --  État du processus
+          L’état de la tâche peut être :
+            « D » = dormant non interruptible
+            « R » = s’exécutant
+            « S » = dormant
+            « T » = tracé ou stoppé
+            « Z » = zombie
+
+- %CPU     = Utilisation CPU
+
+
+- %MEM  --  Utilisation mémoire (RES)
+          Pourcentage de la mémoire physique disponible actuellement  utilisée
+          par la tâche.
+
+- TIME  --  Temps CPU
+          Le temps CPU total utilisé par la tâche depuis son lancement.  Quand
+          le  «mode  Cumulatif » est Actif, chaque processus est listé avec le
+          temps cpu que lui et ses fils tués ont utilisé. Vous pouvez basculer
+          en  « mode Cumulatif » avec « S », qui est une option de la ligne de
+          commande et une commande interactive. Voir  la commande  interactive
+          « S » pour plus d’informations sur ce mode.
+
+- COMMAND  --   Ligne de commande ou nom du programme
+          Affiche la ligne de commande utilisée pour lancer une  tâche  ou  le
+          nom  du  programme associé. Vous basculez entre la ligne de commande
+          et le nom avec la touche « c », qui est à la fois une option  de  la
+          ligne de commande et une commande interactive.
+
+2) Quels sont les différents états (states) que peut prendre un processus, selon la commande top ?
+
+	L’état de la tâche peut être :
+            « D » = dormant non interruptible
+            « R » = s’exécutant
+            « S » = dormant
+            « T » = tracé ou stoppé
+            « Z » = zombie
+            
+
+3) Relancer top et appuyez sur la barre d’espacement pour mettre à jour l’affichage. Maintenez la
+barre d’espacement enfoncée pour mettre à jour l’affichage de façon frénétique. Que remarquez-
+vous sur l’utilisation du processeur ?
+
+- l'utilisation du processeur et presque nule,
+
+Qu’affiche le load average en haut à droite ? Expliquez ce qu’est le « load average ».
+
+- load average: 0.56, 1.14, 1.62
+
+
+Constatez que la commande uptime vous donne non seulement le temps depuis lequel le système a été démarré, mais également le load average.
+
+$ uptime 
+ 	17:46:03 up  3:05,  1 user,  load average: 0.74, 1.07, 0.87
+
+4) Faites les commandes ps aux et ls /proc. Voyez-vous une correspondance entre les numéros affichés ?
+
+chaque PID a son propre fichier dans proc.
+
+
+5) Trouvez le PID de votre shell bash en faisant ps, puis dites ce que contiennent les fichiers suivants
+(expliquez ce que sont censés contenir chacun de ces fichiers, pas besoin d’en lister tout le contenu) :
+
+/proc$ ps a
+	    PID TTY      STAT   TIME COMMAND
+	    911 tty2     Ssl+   0:00 /usr/libexec/gdm-wayland-session env GNOME_SHELL_SE
+	    917 tty2     Sl+    0:00 /usr/libexec/gnome-session-binary --session=ubuntu
+	  11697 pts/1    Ss     0:00 bash
+  	11850 pts/1    R+     0:00 ps a
+/proc$ cat /proc/11697/status 
+	Name:	bash
+	Umask:	0002
+	State:	S (sleeping)
+	Tgid:	11697
+	Ngid:	0
+	Pid:	11697
+	PPid:	9265
+	TracerPid:	0
+	Uid:	1000	1000	1000	1000
+	Gid:	1000	1000	1000	1000
+	FDSize:	256
+	Groups:	4 24 27 30 46 122 134 135 1000 
+	NStgid:	11697
+	NSpid:	11697
+	NSpgid:	11697
+	NSsid:	11697
+	VmPeak:	   19708 kB
+	VmSize:	   19708 kB
+	VmLck:	       0 kB
+	VmPin:	       0 kB
+	VmHWM:	    5356 kB
+	VmRSS:	    5356 kB
+	RssAnon:	    1512 kB
+	RssFile:	    3844 kB
+	RssShmem:	       0 kB
+	VmData:	    1500 kB
+	VmStk:	     132 kB
+	VmExe:	     924 kB
+	VmLib:	    1748 kB
+	VmPTE:	      64 kB
+	VmSwap:	       0 kB
+	HugetlbPages:	       0 kB
+	CoreDumping:	0
+	THP_enabled:	1
+	Threads:	1
+	SigQ:	0/31132
+	SigPnd:	0000000000000000
+	ShdPnd:	0000000000000000
+	SigBlk:	0000000000010000
+	SigIgn:	0000000000384004
+	SigCgt:	000000004b813efb
+	CapInh:	0000000000000000
+	CapPrm:	0000000000000000
+	CapEff:	0000000000000000
+	CapBnd:	000001ffffffffff
+	CapAmb:	0000000000000000
+	NoNewPrivs:	0
+	Seccomp:	0
+	Seccomp_filters:	0
+	Speculation_Store_Bypass:	thread vulnerable
+	SpeculationIndirectBranch:	conditional enabled
+	Cpus_allowed:	ffff
+	Cpus_allowed_list:	0-15
+	Mems_allowed:	00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000001
+	Mems_allowed_list:	0
+	voluntary_ctxt_switches:	246
+	nonvoluntary_ctxt_switches:	1
+
+-- ce fichier contien les uinformation du processus selon le uid du programe .
+
+$ cat /proc/11697/cmdline 
+	bash
+-- ce ficher contien le nom du processus
+
+$ cat /proc/11697/environ 
+SYSTEMD_EXEC_PID=1407SSH_AUTH_SOCK=/run/user/1000/keyring/sshSESSION_MANAGER=local/othmane-SATELLITE-C670-12X:@/tmp/.ICE-unix/1010,unix/othmane-SATELLITE-C670-12X:/tmp/.ICE-unix/1010GNOME_TERMINAL_SCREEN=/org/gnome/Terminal/screen/6826a68d_d711_43b4_a0df_9b61a562b035LANG=en_US.UTF-8XDG_CURRENT_DESKTOP=ubuntu:GNOMECOLORTERM=truecolorWAYLAND_DISPLAY=wayland-0LC_IDENTIFICATION=ar_MA.UTF-8XMODIFIERS=@im=ibusDISPLAY=:0PWD=/home/othmaneQT_IM_MODULE=ibusUSER=othmaneDESKTOP_SESSION=ubuntuXDG_MENU_PREFIX=gnome-LC_MEASUREMENT=ar_MA.UTF-8HOME=/home/othmaneDBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/busLC_NUMERIC=ar_MA.UTF-8SSH_AGENT_LAUNCHER=openssh_=/usr/bin/gnome-sessionXDG_CONFIG_DIRS=/etc/xdg/xdg-ubuntu:/etc/xdgVTE_VERSION=7000XDG_SESSION_DESKTOP=ubuntuQT_ACCESSIBILITY=1GNOME_DESKTOP_SESSION_ID=this-is-deprecatedGNOME_SETUP_DISPLAY=:1LC_TIME=ar_MA.UTF-8DEBUGINFOD_URLS=https://debuginfod.ubuntu.com GNOME_TERMINAL_SERVICE=:1.146LC_PAPER=ar_MA.UTF-8LOGNAME=othmaneGNOME_SHELL_SESSION_MODE=ubuntuGTK_MODULES=gail:atk-bridgePATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/binXDG_RUNTIME_DIR=/run/user/1000XDG_SESSION_TYPE=waylandSHELL=/bin/bashLC_TELEPHONE=ar_MA.UTF-8XDG_DATA_DIRS=/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktopUSERNAME=othmaneLC_MONETARY=ar_MA.UTF-8GNOME_KEYRING_CONTROL=/run/user/1000/keyringXAUTHORITY=/run/user/1000/.mutter-Xwaylandauth.JHN711LC_NAME=ar_MA.UTF-8XDG_SESSION_CLASS=userTERM=xterm-256colorGDMSESSION=ubuntuIM_CONFIG_PHASE=1LC_ADDRESS=ar_MA.UTF-8
+
+
+-- Affiche toutes les variables d'environnement, le cas échéant, comme vu par les processus respectifs. Ces variables seront affichées
+dans leur ordre natif brut, pas l'ordre trié que vous êtes habitués à voir avec un "ensemble" non qualifié.
+
+6) En utilisant man ps, trouvez la commande qui permet
+
+a) d’afficher les processus qui tournent pour vous seulement (pour votre utilisateur).
+	$ ps -u othmane 
+b) d’afficher tous les processus en arbre, pour voir les relations de parenté entre processus.
+	$ pstree -G
+	systemd─┬─ModemManager───2*[{ModemManager}]
+        ├─NetworkManager───2*[{NetworkManager}]
+        ├─accounts-daemon───2*[{accounts-daemon}]
+        ├─avahi-daemon───avahi-daemon
+        ├─colord───2*[{colord}]
+        ├─cron
+        ├─cups-browsed───2*[{cups-browsed}]
+        ├─cupsd───dbus
+        ├─dbus-daemon
+	...
+	├─systemd-journal
+        ├─systemd-logind
+        ├─systemd-oomd
+        ├─systemd-resolve
+        ├─systemd-timesyn───{systemd-timesyn}
+        ├─systemd-udevd───systemd-udevd
+        ├─thermald───2*[{thermald}]
+        ├─udisksd───4*[{udisksd}]
+        ├─unattended-upgr───{unattended-upgr}
+        ├─upowerd───2*[{upowerd}]
+        └─wpa_supplicant
+        
+c) de trouver le nom du processus père de votre shell bash.
+	─gnome-terminal-─┬─bash─┬─grep
+
+7) Repérer un processus qui vous appartient de votre choix et trouvez-en le PID. Allez ensuite dans le répertoire /proc pour trouver les informations suivantes :
+a) Les fichiers que le processus a ouverts
+	$ cat maps
+	560725ab2000-560725ae1000 r--p 00000000 08:07 6553692                    /usr/bin/bash
+	560725ae1000-560725bc8000 r-xp 0002f000 08:07 6553692                    /usr/bin/bash
+	560725bc8000-560725c03000 r--p 00116000 08:07 6553692                    /usr/bin/bash
+	560725c03000-560725c07000 r--p 00151000 08:07 6553692                    /usr/bin/bash
+	560725c07000-560725c10000 rw-p 00155000 08:07 6553692                    /usr/bin/bash
+	560725c10000-560725c1b000 rw-p 00000000 00:00 0 
+	560727ae7000-560727c33000 rw-p 00000000 00:00 0                          [heap]
+	7f5acf600000-7f5ad03e8000 r--p 00000000 08:07 6559130                    /usr/lib/locale/locale-archive
+	7f5ad0400000-7f5ad0422000 r--p 00000000 08:07 6560287                    /usr/lib/x86_64-linux-gnu/libc.so.6
+	7f5ad0422000-7f5ad059b000 r-xp 00022000 08:07 6560287                    /usr/lib/x86_64-linux-gnu/libc.so.6
+	7f5ad059b000-7f5ad05f2000 r--p 0019b000 08:07 6560287                    /usr/lib/x86_64-linux-gnu/libc.so.6
+	7f5ad05f2000-7f5ad05f6000 r--p 001f1000 08:07 6560287                    /usr/lib/x86_64-linux-gnu/libc.so.6
+	7f5ad05f6000-7f5ad05f8000 rw-p 001f5000 08:07 6560287                    /usr/lib/x86_64-linux-gnu/libc.so.6
+	7f5ad05f8000-7f5ad0605000 rw-p 00000000 00:00 0 
+	7f5ad07f5000-7f5ad07f8000 rw-p 00000000 00:00 0 
+	7f5ad07f8000-7f5ad0806000 r--p 00000000 08:07 6561443                    /usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
+	7f5ad0806000-7f5ad0817000 r-xp 0000e000 08:07 6561443                    /usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
+	7f5ad0817000-7f5ad0825000 r--p 0001f000 08:07 6561443                    /usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
+	7f5ad0825000-7f5ad0829000 r--p 0002c000 08:07 6561443                    /usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
+	7f5ad0829000-7f5ad082a000 rw-p 00030000 08:07 6561443                    /usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
+	7f5ad0833000-7f5ad083a000 r--s 00000000 08:07 7212226                    /usr/lib/x86_64-linux-gnu/gconv/gconv-modules.cache
+	7f5ad083a000-7f5ad083c000 rw-p 00000000 00:00 0 
+	7f5ad083c000-7f5ad083d000 r--p 00000000 08:07 6559941                    /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+	7f5ad083d000-7f5ad0866000 r-xp 00001000 08:07 6559941                    /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+	7f5ad0866000-7f5ad0870000 r--p 0002a000 08:07 6559941                    /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+	7f5ad0870000-7f5ad0872000 r--p 00034000 08:07 6559941                    /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+	7f5ad0872000-7f5ad0874000 rw-p 00036000 08:07 6559941                    /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+	7ffcc5370000-7ffcc5391000 rw-p 00000000 00:00 0                          [stack]
+	7ffcc53c1000-7ffcc53c5000 r--p 00000000 00:00 0                          [vvar]
+	7ffcc53c5000-7ffcc53c7000 r-xp 00000000 00:00 0                          [vdso]
+	ffffffffff600000-ffffffffff601000 --xp 00000000 00:00 0                  [vsyscall]
+
+b) Le nom complet de l’exécutable auquel correspond ce processus.
+	$ cat cmdline 
+	bash

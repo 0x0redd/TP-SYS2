@@ -1,0 +1,8 @@
+je suis dans com1
+F   UID     PID    PPID PRI  NI    VSZ   RSS WCHAN  STAT TTY        TIME COMMAND
+0  1000   20331   20313  20   0  19708  5352 do_wai Ss   pts/0      0:00 bash
+1  1000   20404   20331  20   0  19708  3732 do_wai S+   pts/0      0:00  \_ bash
+4  1000   20405   20404  20   0  21132  1576 -      R+   pts/0      0:00      \_ ps fl
+4  1000     894     849  20   0 170468  6036 do_pol Ssl+ tty2       0:00 /usr/libexec/gdm-wayland-session env GNOME_SHELL_SESSION_MODE=ubuntu /usr/bin/gnome-session --session=ubuntu
+0  1000     900     894  20   0 232156 14796 do_pol Sl+  tty2       0:00  \_ /usr/libexec/gnome-session-binary --session=ubuntu
+je suis de retour dans com1
